@@ -1,0 +1,8 @@
+*\~
+*.pyc
+*.log
+*.egg-info/
+/build/
+/dist/
+/env/
+/_trial_temp/

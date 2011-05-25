@@ -1,0 +1,11 @@
+# pip requirements file for development of twisted-hl7
+#
+# Usage:
+#
+#     pip install -r dev_requirements.txt
+
+# setup.py develop (will grab twisted-hl7's dependencies
+-e ./
+
+Sphinx==1.0.7
+mock==0.7.1
