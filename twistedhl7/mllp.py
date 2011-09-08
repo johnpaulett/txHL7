@@ -1,4 +1,5 @@
 from twisted.internet import protocol, defer
+from twistedhl7.ack import ACK
 from zope.interface import Interface
 
 class IHL7Receiver(Interface):
@@ -32,6 +33,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
     References:
 
         [1]: http://www.hl7standards.com/blog/2007/05/02/hl7-mlp-minimum-layer-protocol-defined/
+        [2]: http://www.hl7standards.com/blog/2007/02/01/ack-message-original-mode-acknowledgement/
     """
 
     _buffer = ''
@@ -43,13 +45,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
 
         # success callback
         def onSuccess(message):
-            # wrap message in payload container
             self.writeMessage(message)
-
-        # error callback
-        def onError(err):
-            #self.writeMessage(message)
-            return err
 
         # try to find a complete message(s) in the combined the buffer and data
         messages = (self._buffer + data).split(self.end_block)
@@ -63,6 +59,12 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
 
             # only pass messages with data
             if len(message) > 0:
+                # error callback (defined here, since error depends on
+                # current message).  rejects the message
+                def onError(err):
+                    reject = ACK(message, ack_code='AR')
+                    self.writeMessage(reject)
+
                 # have the factory create a deferred and pass the message
                 # to the approriate IHL7Receiver instance
                 d = self.factory.handleMessage(message)
@@ -75,14 +77,12 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
             self.start_block + message + self.end_block + self.carriage_return
         )
 
-
 class MLLPFactory(protocol.ServerFactory):
     protocol = MinimalLowerLayerProtocol
 
     def __init__(self, receiver):
         self.receiver = receiver
         # set server name
-
 
     def handleMessage(self, message):
         # IHL7Receiver allows implementations to return a Deferred or the

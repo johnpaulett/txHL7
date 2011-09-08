@@ -1,28 +1,48 @@
 from mock import Mock
 from twisted.internet import defer
-from twistedhl7.mllp import MinimalLowerLayerProtocol
+from twistedhl7.ack import ACK
+from twistedhl7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
 from unittest import TestCase
+from utils import HL7_MESSAGE
+from zope.interface import implements
 
-HL7_MESSAGE = 'MSH|^~\&|GHH LAB|ELAB-3|GHH OE|BLDG4|200202150930||ORU^R01|CNTRL-3456|P|2.4\rID|||555-44-4444||EVERYWOMAN^EVE^E^^^^L|JONES|196203520|F|||153 FERNWOOD DR.^^STATESVILLE^OH^35292||(206)3345232|(206)752-121||||AC555444444||67-A4335^OH^20030520\rOBR|1|845439^GHH OE|1045813^GHH LAB|1554-5^GLUCOSE|||200202150730||||||||555-55-5555^PRIMARY^PATRICIA P^^^^MD^^LEVEL SEVEN HEALTHCARE, INC.|||||||||F||||||444-44-4444^HIPPOCRATES^HOWARD H^^^^MD\rBX|1|SN|1554-5^GLUCOSE^POST 12H CFST:MCNC:PT:SER/PLAS:QN||^182|mg/dl|70_105|H|||F'
+
+EXPECTED_ACK = 'MSH|^~\\&|GHH OE|BLDG4|GHH LAB|ELAB-3|200202150930||ACK^001|CNTRL-3456|P|2.4\rMSA|{0}|CNTRL-3456'
+
 
 class CaptureReceiver(object):
+    # very simple, fake receiver that logs messages
+    implements(IHL7Receiver)
+
     def __init__(self):
         self.messages = []
+        self.ack_code = 'AA'
+
     def handleMessage(self, message):
         self.messages.append(message)
-        return defer.succeed('hi')
+        return defer.succeed(ACK(message, self.ack_code))
 
 class MinimalLowerLayerProtocolTest(TestCase):
+    def setUp(self):
+        self.receiver = CaptureReceiver()
+
+        self.protocol = MinimalLowerLayerProtocol()
+        self.protocol.factory = MLLPFactory(self.receiver)
+        self.protocol.transport = Mock()
+
     def testParseMessage(self):
-        #factory = Mock()
-        #factory.handleMessage.return_value = defer.succeed('hi')
-        factory = CaptureReceiver()
+        self.protocol.dataReceived('\x0b' + HL7_MESSAGE + '\x1c\x0d')
 
-        protocol = MinimalLowerLayerProtocol()
-        protocol.factory = factory
-        protocol.transport = Mock()
+        self.assertEqual(self.receiver.messages, [HL7_MESSAGE])
+        self.assertEqual(self.protocol.transport.write.call_args[0][0],
+                         '\x0b' + EXPECTED_ACK.format('AA') + '\x1c\x0d')
 
-        protocol.dataReceived('\x0b' + 'payload' + '\x1c\x0d')
+    def testUncaughtError(self):
+        # throw a random exception, make sure Errback is used
+        self.receiver.handleMessage = Mock()
+        self.receiver.handleMessage.side_effect = Exception
 
-        self.assertEqual(factory.messages, ['payload'])
+        self.protocol.dataReceived('\x0b' + HL7_MESSAGE + '\x1c\x0d')
 
+        self.assertEqual(self.protocol.transport.write.call_args[0][0],
+                         '\x0b' + EXPECTED_ACK.format('AR') + '\x1c\x0d')
