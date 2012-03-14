@@ -22,6 +22,9 @@ class CaptureReceiver(object):
         self.messages.append(message)
         return defer.succeed(ACK(message, self.ack_code))
 
+    def getCodec(self):
+        return 'cp1252'
+
 class MinimalLowerLayerProtocolTest(TestCase):
     def setUp(self):
         self.receiver = CaptureReceiver()
@@ -46,3 +49,14 @@ class MinimalLowerLayerProtocolTest(TestCase):
 
         self.assertEqual(self.protocol.transport.write.call_args[0][0],
                          '\x0b' + EXPECTED_ACK.format('AR') + '\x1c\x0d')
+
+    def testParseMessageUnicode(self):
+        message = HL7_MESSAGE.replace('BLDG4', 'x\x82y')
+        self.protocol.dataReceived('\x0b' + message + '\x1c\x0d')
+
+        expected_message = unicode(HL7_MESSAGE).replace(u'BLDG4', u'x\u201ay')
+        self.assertEqual(self.receiver.messages, [expected_message])
+
+        expected_ack = EXPECTED_ACK.replace('BLDG4', 'x\x82y')
+        self.assertEqual(self.protocol.transport.write.call_args[0][0],
+                         '\x0b' + expected_ack.format('AA') + '\x1c\x0d')

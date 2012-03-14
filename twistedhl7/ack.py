@@ -1,6 +1,6 @@
 from hl7 import parse
 
-_ACK_TEMPLATE = 'MSH|^~\\&|{send_app}|{send_fac}|{recv_app}|{recv_fac}|{dttm}||ACK^001|{msgid}|P|{version}\rMSA|{ack_code}|{msgid}'
+_ACK_TEMPLATE = u'MSH|^~\\&|{send_app}|{send_fac}|{recv_app}|{recv_fac}|{dttm}||ACK^001|{msgid}|P|{version}\rMSA|{ack_code}|{msgid}'
 
 
 def ACK(original_message, ack_code='AA'):
@@ -18,6 +18,8 @@ def ACK(original_message, ack_code='AA'):
         -
 
     """
+    # hl7.parse requires the message is unicode already or can be easily
+    # converted via unicode()
     msh = parse(original_message).segment('MSH')
 
     # easy-access function to make sure unicode is always called

@@ -21,3 +21,12 @@ class ACKTest(TestCase):
         expected = 'MSH|^~\\&|GHH OE|BLDG4|GHH LAB|ELAB-3|200202150930||ACK^001|CNTRL-3456|P|2.4\rMSA|AE|CNTRL-3456'
 
         self.assertEqual(expected, result)
+
+    def test_unicode(self):
+        # ACK takes and returns unicode.  The Factory is responsible for
+        # decoding/encoding
+        message = unicode(HL7_MESSAGE).replace(u'BLDG4', u'x\u201ay')
+        result = ACK(message)
+
+        expected = u'MSH|^~\\&|GHH OE|x\u201ay|GHH LAB|ELAB-3|200202150930||ACK^001|CNTRL-3456|P|2.4\rMSA|AA|CNTRL-3456'
+        self.assertEqual(expected, result)
