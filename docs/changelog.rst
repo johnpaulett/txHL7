@@ -2,6 +2,14 @@
 Change Log
 ==========
 
+0.0.3 - March 2012
+==================
+
+* Convert to unicode.  As soon as a message string is assembled, decode into
+  unicode, using the codec specified by the implementation of
+  ``IHL7Receiver.getCodec()`.  When writing an ACK, the message is re-encoded
+  into that codec.
+
 0.0.2 - September 2011
 ======================
 
