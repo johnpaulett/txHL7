@@ -1,4 +1,5 @@
 from twisted.internet import protocol, defer
+from twisted.python import log
 from twistedhl7.ack import ACK
 from zope.interface import Interface
 
@@ -78,6 +79,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
                 def onError(err):
                     reject = ACK(message, ack_code='AR')
                     self.writeMessage(reject)
+                    log.err(err, "Python error: ")
 
                 # have the factory create a deferred and pass the message
                 # to the approriate IHL7Receiver instance
