@@ -2,6 +2,7 @@ from twisted.internet import protocol, defer
 from twistedhl7.ack import ACK
 from zope.interface import Interface
 
+
 class IHL7Receiver(Interface):
     # set error handling code
     # set system name
@@ -33,6 +34,7 @@ class IHL7Receiver(Interface):
         """
         return None
 
+
 class MinimalLowerLayerProtocol(protocol.Protocol):
     """
     Minimal Lower-Layer Protocol (MLLP) takes the form:
@@ -46,9 +48,9 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
     """
 
     _buffer = ''
-    start_block = '\x0b' #<VT>, vertical tab
-    end_block = '\x1c' #<FS>, file separator
-    carriage_return = '\x0d' #<CR>, \r
+    start_block = '\x0b'  # <VT>, vertical tab
+    end_block = '\x1c'  # <FS>, file separator
+    carriage_return = '\x0d'  # <CR>, \r
 
     def dataReceived(self, data):
 
@@ -92,6 +94,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
         self.transport.write(
             self.start_block + message + self.end_block + self.carriage_return
         )
+
 
 class MLLPFactory(protocol.ServerFactory):
     protocol = MinimalLowerLayerProtocol
