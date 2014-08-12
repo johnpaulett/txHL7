@@ -20,3 +20,7 @@ Run simple server with a custom receiver on port 7575::
 Options help::
 
     twistd mllp --help
+
+Installation of this package may result in a warning which can be ignored::
+
+    package init file 'twisted/plugins/__init__.py' not found (or not a regular file)

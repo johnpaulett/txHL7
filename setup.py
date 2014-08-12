@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='twisted-hl7',
-    version='0.0.3',
+    version='0.0.4',
     author='John Paulett',
     author_email='john@paulett.org',
     url='http://twisted-hl7.readthedocs.org',
@@ -23,7 +23,10 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Networking'
     ],
-    packages=['twistedhl7'],
+    packages=['twistedhl7', 'twisted.plugins'],
+    package_data={
+        "twisted": ["plugins/mllp_plugin.py"]
+    },
     install_requires=[
         # require twisted, but allow client to require specific version
         'twisted',
