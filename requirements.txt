@@ -7,5 +7,6 @@
 # setup.py develop (will grab twisted-hl7's dependencies)
 -e ./
 
-Sphinx==1.0.7
-mock==0.7.1
+Sphinx==1.2.2
+mock==1.0.1
+flake8==2.2.2
