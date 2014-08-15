@@ -1,10 +1,16 @@
 
+http://twisted-hl7.readthedocs.org/
+
+
 Setup environment::
 
-    virtualenv --no-site-packages env
-    source env/bin/activate
-    pip install -r dev_requirements.txt
+    make env
 
-Run tests::
+Run tests (via twisted's trial)::
 
-    trial tests
+    make tests
+
+
+.. image::
+   https://travis-ci.org/johnpaulett/twisted-hl7.png
+   :target: https://travis-ci.org/johnpaulett/twisted-hl7
