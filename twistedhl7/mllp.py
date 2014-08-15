@@ -1,15 +1,15 @@
+import sys
 from twisted.internet import protocol, defer
+from twisted.python import log
 from twistedhl7.ack import ACK
-from zope.interface import Interface
+from zope.interface import Interface, implements
+from zope.interface.verify import verifyObject
+
 
 class IHL7Receiver(Interface):
     # set error handling code
     # set system name
     # set 2.9.2.1 validation
-
-    def prepareMessage(original):
-        # default to not modifying the message
-        return original
 
     def handleMessage(message):
         """Clients should implement ``handleMessage``, which takes a ``message``
@@ -27,11 +27,25 @@ class IHL7Receiver(Interface):
         """
 
     def getCodec():
-        """Clients should return the codec name, used when decoding into unicode
+        """Clients should return the codec name and error handling scheme,
+        used when decoding into unicode.
 
         http://docs.python.org/library/codecs.html#standard-encodings
+        https://docs.python.org/2/library/codecs.html#codec-base-classes
         """
-        return None
+
+
+class LoggingReceiver(object):
+    """Simple MLLP receiver implementation that logs messages."""
+    implements(IHL7Receiver)
+
+    def handleMessage(self, message):
+        log.msg(message)
+        return defer.succeed(ACK(message))
+
+    def getCodec(self):
+        return 'ascii', 'replace'
+
 
 class MinimalLowerLayerProtocol(protocol.Protocol):
     """
@@ -46,9 +60,9 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
     """
 
     _buffer = ''
-    start_block = '\x0b' #<VT>, vertical tab
-    end_block = '\x1c' #<FS>, file separator
-    carriage_return = '\x0d' #<CR>, \r
+    start_block = '\x0b'  # <VT>, vertical tab
+    end_block = '\x1c'  # <FS>, file separator
+    carriage_return = '\x0d'  # <CR>, \r
 
     def dataReceived(self, data):
 
@@ -93,13 +107,20 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
             self.start_block + message + self.end_block + self.carriage_return
         )
 
+
 class MLLPFactory(protocol.ServerFactory):
     protocol = MinimalLowerLayerProtocol
 
     def __init__(self, receiver):
+        verifyObject(IHL7Receiver, receiver)
         self.receiver = receiver
-        self.encoding = receiver.getCodec()
-        # set server name
+        encoding = receiver.getCodec()
+        if isinstance(encoding, tuple):
+            encoding, encoding_errors = encoding
+        else:
+            encoding_errors = None
+        self.encoding = encoding or sys.getdefaultencoding()
+        self.encoding_errors = encoding_errors or 'strict'
 
     def handleMessage(self, message):
         # IHL7Receiver allows implementations to return a Deferred or the
@@ -108,12 +129,12 @@ class MLLPFactory(protocol.ServerFactory):
 
     def decode(self, value):
         # turn value into unicode using the receiver's declared codec
-        if self.encoding and isinstance(value, str):
-            return value.decode(self.encoding)
+        if isinstance(value, str):
+            return value.decode(self.encoding, self.encoding_errors)
         return unicode(value)
 
     def encode(self, value):
-        # turn value into unicode using the receiver's declared codec
-        if self.encoding and isinstance(value, unicode):
-            return value.encode(self.encoding)
-        return unicode(value)
+        # turn value into byte string using the receiver's declared codec
+        if isinstance(value, unicode):
+            return value.encode(self.encoding, self.encoding_errors)
+        return value

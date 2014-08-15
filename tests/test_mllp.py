@@ -23,7 +23,7 @@ class CaptureReceiver(object):
         return defer.succeed(ACK(message, self.ack_code))
 
     def getCodec(self):
-        return 'cp1252'
+        return 'cp1252', 'strict'
 
 class MinimalLowerLayerProtocolTest(TestCase):
     def setUp(self):

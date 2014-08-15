@@ -28,12 +28,14 @@ a developer may not wish to use Twisted, instead he may elect to implement
 the TCP server using :py:mod:`socket` or :py:mod:`asyncore`.  Likewise, a developer
 may wish to use an alternate HL7 parsing routine, but still use twisted-hl7.
 
+
 Contents
 ========
 
 .. toctree::
    :maxdepth: 2
 
+   usage
    changelog
 
 References
