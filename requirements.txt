@@ -2,9 +2,9 @@
 #
 # Usage:
 #
-#     pip install -r dev_requirements.txt
+#     pip install -r requirements.txt
 
-# setup.py develop (will grab twisted-hl7's dependencies
+# setup.py develop (will grab twisted-hl7's dependencies)
 -e ./
 
 Sphinx==1.0.7

@@ -1,7 +1,9 @@
 *\~
+*\#*
 *.pyc
 *.log
 *.egg-info/
+/*.egg/
 /build/
 /dist/
 /env/
