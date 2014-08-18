@@ -17,3 +17,9 @@ lint: env
 
 tests: env
 	$(TRIAL) tests
+
+build:
+	$(PYTHON) setup.py sdist
+
+upload: build
+	$(PYTHON) setup.py sdist register upload
