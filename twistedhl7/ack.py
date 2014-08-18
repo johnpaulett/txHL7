@@ -24,9 +24,7 @@ def ACK(original_message, ack_code='AA'):
 
     # easy-access function to make sure unicode is always called
     def m(element):
-        # python-hl7's MSH indexes are off by one compared to how the spec
-        # labels things
-        return unicode(msh[element-1])
+        return unicode(msh[element])
 
     # TODO actually build the message instead of using string interpolation
     return _ACK_TEMPLATE.format(
@@ -42,4 +40,3 @@ def ACK(original_message, ack_code='AA'):
         version=m(12),
         ack_code=ack_code,
     )
-

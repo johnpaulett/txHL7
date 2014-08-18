@@ -2,6 +2,17 @@
 Change Log
 ==========
 
+0.1.0 - August 2014
+===================
+
+* twistd plugin.  Thanks to `Andrew Wason <https://github.com/rectalogic>`_
+* Upgrade to latest python-hl7, v0.3.0, for correct MSH indexing
+
+.. warning::
+
+   python-hl7 v0.3.0 breaks `backwards compatibility
+   <http://python-hl7.readthedocs.org/en/latest/changelog.html#changelog-0-3-0>`_.
+
 0.0.3 - March 2012
 ==================
 
