@@ -92,6 +92,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
                 def onError(err):
                     reject = ACK(message, ack_code='AR')
                     self.writeMessage(reject)
+                    log.err(err, "Python error: ")
 
                 # have the factory create a deferred and pass the message
                 # to the approriate IHL7Receiver instance
