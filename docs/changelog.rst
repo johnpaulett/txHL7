@@ -2,6 +2,15 @@
 Change Log
 ==========
 
+0.2.0 - August 2014
+===================
+
+* Abstract message into a separate class that is responsible for building ACK.
+  This makes twistedhl7 useable with other HL7 parsing frameworks.
+  Requires a new ``IHL7Receiver.parseMessage()`` interface method.
+* Add message implementation based on python-hl7, using the new ACK functionality in 0.3.1
+* Upgrade to latest python-hl7, v0.3.1, for ACK creation
+
 0.1.0 - August 2014
 ===================
 
