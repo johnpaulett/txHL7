@@ -1,44 +1,62 @@
+import re
 from mock import Mock
 from twisted.internet import defer
-from twistedhl7.ack import ACK
 from twistedhl7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
+from twistedhl7.receiver import ParsedMessage, HL7ParsedMessage, AbstractReceiver
 from unittest import TestCase
 from utils import HL7_MESSAGE
 from zope.interface import implements
 
 
-EXPECTED_ACK = 'MSH|^~\\&|GHH OE|BLDG4|GHH LAB|ELAB-3|200202150930||ACK^001|CNTRL-3456|P|2.4\rMSA|{0}|CNTRL-3456'
+ACK_ID = "TESTACK"
+EXPECTED_ACK_RE = '^' + re.escape('\x0bMSH|^~\\&|GHH OE|BLDG4|GHH LAB|ELAB-3|') + r'\d+' + re.escape('||ACK^R01|' + ACK_ID + '|P|2.4\rMSA|') + '{0}' + re.escape('|CNTRL-3456\x1c\x0d') + '$'
 
 
 class CaptureReceiver(object):
-    # very simple, fake receiver that logs messages
-    implements(IHL7Receiver)
-
     def __init__(self):
         self.messages = []
         self.ack_code = 'AA'
 
-    def handleMessage(self, message):
-        self.messages.append(message)
-        return defer.succeed(ACK(message, self.ack_code))
+    def handleMessage(self, parsed_message):
+        self.messages.append(parsed_message.unparsed_message)
+        return defer.succeed(parsed_message.ack(self.ack_code))
+
+
+class HL7ControlMessage(HL7ParsedMessage):
+    # Reimplement ACK so we can control message ID
+    def ack(self, ack_code='AA'):
+        return unicode(self.message.create_ack(ack_code, message_id=ACK_ID))
+
+
+class HL7CaptureReceiver(CaptureReceiver):
+    # very simple, fake receiver that logs messages
+    implements(IHL7Receiver)
+
+    def parseMessage(self, unparsed_message):
+        return HL7ControlMessage(unparsed_message)
 
     def getCodec(self):
         return 'cp1252', 'strict'
 
+
+def create_protocol(receiver):
+    protocol = MinimalLowerLayerProtocol()
+    protocol.factory = MLLPFactory(receiver)
+    protocol.transport = Mock()
+    return protocol
+
+
 class MinimalLowerLayerProtocolTest(TestCase):
     def setUp(self):
-        self.receiver = CaptureReceiver()
-
-        self.protocol = MinimalLowerLayerProtocol()
-        self.protocol.factory = MLLPFactory(self.receiver)
-        self.protocol.transport = Mock()
+        self.receiver = HL7CaptureReceiver()
+        self.protocol = create_protocol(self.receiver)
 
     def testParseMessage(self):
         self.protocol.dataReceived('\x0b' + HL7_MESSAGE + '\x1c\x0d')
 
         self.assertEqual(self.receiver.messages, [HL7_MESSAGE])
-        self.assertEqual(self.protocol.transport.write.call_args[0][0],
-                         '\x0b' + EXPECTED_ACK.format('AA') + '\x1c\x0d')
+        self.assertTrue(re.match(EXPECTED_ACK_RE.format('AA'),
+                                 self.protocol.transport.write.call_args[0][0]))
 
     def testUncaughtError(self):
         # throw a random exception, make sure Errback is used
@@ -47,8 +65,8 @@ class MinimalLowerLayerProtocolTest(TestCase):
 
         self.protocol.dataReceived('\x0b' + HL7_MESSAGE + '\x1c\x0d')
 
-        self.assertEqual(self.protocol.transport.write.call_args[0][0],
-                         '\x0b' + EXPECTED_ACK.format('AR') + '\x1c\x0d')
+        self.assertTrue(re.match(EXPECTED_ACK_RE.format('AR'),
+                                 self.protocol.transport.write.call_args[0][0]))
 
     def testParseMessageUnicode(self):
         message = HL7_MESSAGE.replace('BLDG4', 'x\x82y')
@@ -57,6 +75,46 @@ class MinimalLowerLayerProtocolTest(TestCase):
         expected_message = unicode(HL7_MESSAGE).replace(u'BLDG4', u'x\u201ay')
         self.assertEqual(self.receiver.messages, [expected_message])
 
-        expected_ack = EXPECTED_ACK.replace('BLDG4', 'x\x82y')
-        self.assertEqual(self.protocol.transport.write.call_args[0][0],
-                         '\x0b' + expected_ack.format('AA') + '\x1c\x0d')
+        expected_ack = EXPECTED_ACK_RE.replace('BLDG4', 'x\x82y')
+        self.assertTrue(re.match(expected_ack.format('AA'),
+                                 self.protocol.transport.write.call_args[0][0]))
+
+
+class BasicCaptureReceiver(AbstractReceiver, CaptureReceiver):
+    """AbstractReceiver subclass that just captures messages"""
+
+
+class BasicReceiverTest(TestCase):
+    def setUp(self):
+        self.receiver = BasicCaptureReceiver()
+        self.protocol = create_protocol(self.receiver)
+
+    def testParseMessage(self):
+        self.protocol.dataReceived('\x0b' + HL7_MESSAGE + '\x1c\x0d')
+        self.assertEqual(self.receiver.messages, [HL7_MESSAGE])
+        # No ACK
+        self.assertFalse(self.protocol.transport.write.called)
+
+
+class CustomMessage(ParsedMessage):
+    # Implement a custom non-HL7 ACK
+    def ack(self, ack_code='AA'):
+        return u"ACK-{0}".format(ack_code)
+
+
+class CustomCaptureReceiver(AbstractReceiver, CaptureReceiver):
+    """AbstractReceiver subclass that just captures messages"""
+    def parseMessage(self, unparsed_message):
+        return CustomMessage(unparsed_message)
+
+
+class CustomReceiverTest(TestCase):
+    def setUp(self):
+        self.receiver = CustomCaptureReceiver()
+        self.protocol = create_protocol(self.receiver)
+
+    def testParseMessage(self):
+        m = "HELLOTHERE"
+        self.protocol.dataReceived('\x0b' + m + '\x1c\x0d')
+        self.assertEqual(self.receiver.messages, [m])
+        self.assertEqual("\x0bACK-AA\x1c\x0d", self.protocol.transport.write.call_args[0][0])

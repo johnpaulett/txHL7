@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='twisted-hl7',
-    version='0.1.0',
+    version='0.2.0',
     author='John Paulett',
     author_email='john@paulett.org',
     url='http://twisted-hl7.readthedocs.org',
@@ -30,6 +30,6 @@ setup(
     install_requires=[
         # require twisted, but allow client to require specific version
         'twisted',
-        'hl7>=0.3.0',
+        'hl7>=0.3.1',
     ],
 )
