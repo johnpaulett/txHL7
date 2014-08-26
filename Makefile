@@ -21,7 +21,7 @@ build:
 clean-docs:
 	cd docs; make clean
 
-docs:
+docs: env
 	cd docs; make html SPHINXBUILD=$(SPHINXBUILD); make man SPHINXBUILD=$(SPHINXBUILD); make doctest SPHINXBUILD=$(SPHINXBUILD)
 
 lint: env
