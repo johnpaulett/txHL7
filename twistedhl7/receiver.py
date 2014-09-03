@@ -48,7 +48,7 @@ class AbstractReceiver(object):
         return ParsedMessage(unparsed_message)
 
     def getCodec(self):
-        return 'ascii', 'replace'
+        return None, None
 
 
 class AbstractHL7Receiver(AbstractReceiver):
