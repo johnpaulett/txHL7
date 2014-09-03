@@ -68,6 +68,8 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
 
         # success callback
         def onSuccess(message):
+            if not message:
+                return
             self.writeMessage(message)
 
         # try to find a complete message(s) in the combined the buffer and data
