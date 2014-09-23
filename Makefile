@@ -33,4 +33,4 @@ upload: build
 	$(PYTHON) setup.py sdist register upload
 
 clean:
-	find twistedhl7 tests -name "*.pyc" -print0 | xargs -0 -r rm
+	find twistedhl7 twisted tests -type f -name '*.pyc' -delete
