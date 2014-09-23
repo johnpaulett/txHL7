@@ -33,25 +33,25 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
         # into the buffer
         self._buffer = messages.pop(-1)
 
-        for unparsed_message in messages:
+        for raw_message in messages:
             # strip the rest of the MLLP shell from the HL7 message
-            unparsed_message = unparsed_message.strip(self.start_block + self.carriage_return)
+            raw_message = raw_message.strip(self.start_block + self.carriage_return)
 
             # only pass messages with data
-            if len(unparsed_message) > 0:
+            if len(raw_message) > 0:
                 # convert into unicode, parseMessage expects decoded string
-                unparsed_message = self.factory.decode(unparsed_message)
-                parsed_message = self.factory.parseMessage(unparsed_message)
+                raw_message = self.factory.decode(raw_message)
+                message_container = self.factory.parseMessage(raw_message)
 
                 # error callback (defined here, since error depends on
                 # current message).  rejects the message
                 def onError(err):
-                    reject = parsed_message.ack(ack_code='AR')
+                    reject = message_container.ack(ack_code='AR')
                     self.writeMessage(reject)
 
                 # have the factory create a deferred and pass the message
                 # to the approriate IHL7Receiver instance
-                d = self.factory.handleMessage(parsed_message)
+                d = self.factory.handleMessage(message_container)
                 d.addCallback(onSuccess)
                 d.addErrback(onError)
 
@@ -83,10 +83,10 @@ class MLLPFactory(protocol.ServerFactory):
     def parseMessage(self, message_str):
         return self.receiver.parseMessage(message_str)
 
-    def handleMessage(self, parsed_message):
+    def handleMessage(self, message_container):
         # IHL7Receiver allows implementations to return a Deferred or the
         # result, so ensure we return a Deferred here
-        return defer.maybeDeferred(self.receiver.handleMessage, parsed_message)
+        return defer.maybeDeferred(self.receiver.handleMessage, message_container)
 
     def decode(self, value):
         # turn value into unicode using the receiver's declared codec

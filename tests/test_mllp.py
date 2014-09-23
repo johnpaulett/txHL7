@@ -2,7 +2,7 @@ import re
 from mock import Mock
 from twisted.internet import defer
 from twistedhl7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
-from twistedhl7.receiver import ParsedMessage, HL7ParsedMessage, AbstractReceiver
+from twistedhl7.receiver import MessageContainer, HL7MessageContainer, AbstractReceiver
 from unittest import TestCase
 from utils import HL7_MESSAGE
 from zope.interface import implements
@@ -17,12 +17,12 @@ class CaptureReceiver(object):
         self.messages = []
         self.ack_code = 'AA'
 
-    def handleMessage(self, parsed_message):
-        self.messages.append(parsed_message.unparsed_message)
-        return defer.succeed(parsed_message.ack(self.ack_code))
+    def handleMessage(self, message_container):
+        self.messages.append(message_container.raw_message)
+        return defer.succeed(message_container.ack(self.ack_code))
 
 
-class HL7ControlMessage(HL7ParsedMessage):
+class HL7ControlMessage(HL7MessageContainer):
     # Reimplement ACK so we can control message ID
     def ack(self, ack_code='AA'):
         return unicode(self.message.create_ack(ack_code, message_id=ACK_ID))
@@ -32,8 +32,8 @@ class HL7CaptureReceiver(CaptureReceiver):
     # very simple, fake receiver that logs messages
     implements(IHL7Receiver)
 
-    def parseMessage(self, unparsed_message):
-        return HL7ControlMessage(unparsed_message)
+    def parseMessage(self, raw_message):
+        return HL7ControlMessage(raw_message)
 
     def getCodec(self):
         return 'cp1252', 'strict'
@@ -96,7 +96,7 @@ class BasicReceiverTest(TestCase):
         self.assertFalse(self.protocol.transport.write.called)
 
 
-class CustomMessage(ParsedMessage):
+class CustomMessage(MessageContainer):
     # Implement a custom non-HL7 ACK
     def ack(self, ack_code='AA'):
         return u"ACK-{0}".format(ack_code)
@@ -104,8 +104,8 @@ class CustomMessage(ParsedMessage):
 
 class CustomCaptureReceiver(AbstractReceiver, CaptureReceiver):
     """AbstractReceiver subclass that just captures messages"""
-    def parseMessage(self, unparsed_message):
-        return CustomMessage(unparsed_message)
+    def parseMessage(self, raw_message):
+        return CustomMessage(raw_message)
 
 
 class CustomReceiverTest(TestCase):
