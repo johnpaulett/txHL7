@@ -2,8 +2,8 @@
 Change Log
 ==========
 
-0.2.0 - August 2014
-===================
+0.2.0 - September 2014
+======================
 
 * Abstract message into a separate class that is responsible for building ACK.
   This makes twistedhl7 useable with other HL7 parsing frameworks.
