@@ -36,6 +36,7 @@ Contents
    :maxdepth: 2
 
    usage
+   api
    changelog
 
 References
