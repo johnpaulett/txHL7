@@ -39,6 +39,8 @@ Contents
    custom-receiver
    api
    changelog
+   license
+   authors
 
 References
 ==========

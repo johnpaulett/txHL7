@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'twisted-hl7'
-copyright = u'2011, John Paulett'
+copyright = u'2011-2014, John Paulett'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -222,7 +222,7 @@ man_pages = [
 epub_title = u'twisted-hl7'
 epub_author = u'John Paulett'
 epub_publisher = u'John Paulett'
-epub_copyright = u'2011, John Paulett'
+epub_copyright = u'2011-2014, John Paulett'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
