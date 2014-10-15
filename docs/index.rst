@@ -28,6 +28,9 @@ a developer may not wish to use Twisted, instead he may elect to implement
 the TCP server using :py:mod:`socket` or :py:mod:`asyncore`.  Likewise, a developer
 may wish to use an alternate HL7 parsing routine, but still use twisted-hl7.
 
+As of the :ref:`0.2.0 release <release-0.2.0>`, there is a streamlined way
+to use python-hl7 as the parser for twisted-hl7, via the
+:py:class:`twistedhl7.receiver.AbstractHL7Receiver`.
 
 Contents
 ========

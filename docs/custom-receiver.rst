@@ -16,16 +16,16 @@ even easier ``AbstractHL7Receiver``):
   message into something more useful.  It will return an instance of
   :py:class:`twistedhl7.receiver.MessageContainer`. The ``MessageContainer``
   is important, because it implements how build an HL7 ACK message.
-* ``handleMessage`` receives the parsed 
+* ``handleMessage`` receives the parsed
   :py:class:`twistedhl7.receiver.MessageContainer` and is where you should put
   your business logic.  It must return a
-  :py:cls:`twisted.internet.defer.Deferred` instance.
+  :py:class:`twisted.internet.defer.Deferred` instance.
 * Internally twisted-hl7 treats data as unicode, and ``getCodec`` provides
   the codec to use to decode the bytestring into unicode.
 
 
 If you wish to use `python-hl7 <http://python-hl7.readthedocs.org>`_ to parse
-the message, :py:class:`twistedhl7.receiver.AbstractHl7Receiver` makes your
+the message, :py:class:`twistedhl7.receiver.AbstractHL7Receiver` makes your
 job even easier.  You just need to implement ``handleMessage`` and optionally
 ``getCodec``.
 
