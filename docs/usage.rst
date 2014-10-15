@@ -14,7 +14,7 @@ Options help::
     twistd mllp --help
 
 
-..note::
+.. note::
 
   Installation of this package may result in a warning which can be ignored::
 
