@@ -26,6 +26,16 @@ class MessageContainer(object):
         """
         return None
 
+    def err(self, failure):
+        """Handle a twisted errback :py:class:`twisted.python.failure.Failure` ``failure``.
+        Subclasses can override to log errors or handle them in a different way.
+        Default implementation returns a rejection ACK.
+
+        :rtype: unicode
+        """
+        # reject the message
+        return self.ack(ack_code='AR')
+
 
 class HL7MessageContainer(MessageContainer):
     """Message implementation that parses using `python-hl7 <http://python-hl7.readthedocs.org>`_"""

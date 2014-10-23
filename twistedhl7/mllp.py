@@ -46,7 +46,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
                 # error callback (defined here, since error depends on
                 # current message).  rejects the message
                 def onError(err):
-                    reject = message_container.ack(ack_code='AR')
+                    reject = message_container.err(err)
                     self.writeMessage(reject)
                     return err
 
