@@ -3,7 +3,7 @@ from mock import Mock
 from twisted.internet import defer
 from twistedhl7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
 from twistedhl7.receiver import MessageContainer, HL7MessageContainer, AbstractReceiver
-from unittest import TestCase
+from twisted.trial.unittest import TestCase
 from utils import HL7_MESSAGE
 from zope.interface import implements
 
@@ -67,6 +67,7 @@ class MinimalLowerLayerProtocolTest(TestCase):
 
         self.assertTrue(re.match(EXPECTED_ACK_RE.format('AR'),
                                  self.protocol.transport.write.call_args[0][0]))
+        self.assertEqual(len(self.flushLoggedErrors(Exception)), 1)
 
     def testParseMessageUnicode(self):
         message = HL7_MESSAGE.replace('BLDG4', 'x\x82y')
