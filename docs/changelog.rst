@@ -4,6 +4,15 @@ Change Log
 
 .. _release-0.2.0:
 
+0.2.1 - November 2014
+=====================
+
+* Delegate error processing to
+  :py:meth:`twistedhl7.receiver.MessageContainer.err`, allowing subclasses
+  to define logic.
+
+.. _release-0.2.0:
+
 0.2.0 - September 2014
 ======================
 

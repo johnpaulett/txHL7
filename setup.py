@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='twisted-hl7',
-    version='0.2.0',
+    version='0.2.1',
     author='John Paulett',
     author_email='john@paulett.org',
     url='http://twisted-hl7.readthedocs.org',
