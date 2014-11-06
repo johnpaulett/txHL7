@@ -1,9 +1,9 @@
 import re
 from mock import Mock
 from twisted.internet import defer
-from twistedhl7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
-from twistedhl7.receiver import MessageContainer, HL7MessageContainer, AbstractReceiver
 from twisted.trial.unittest import TestCase
+from txHL7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
+from txHL7.receiver import MessageContainer, HL7MessageContainer, AbstractReceiver
 from utils import HL7_MESSAGE
 from zope.interface import implements
 

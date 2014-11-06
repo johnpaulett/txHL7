@@ -6,14 +6,14 @@ import hl7
 
 
 class MessageContainer(object):
-    """Base class for messages returned from :py:meth:`twistedhl7.receiver.IHL7Receiver.parseMessage`
-    and passed to :py:meth:`twistedhl7.receiver.IHL7Receiver.handleMessage`
+    """Base class for messages returned from :py:meth:`txHL7.receiver.IHL7Receiver.parseMessage`
+    and passed to :py:meth:`txHL7.receiver.IHL7Receiver.handleMessage`
     """
     def __init__(self, raw_message):
         """Initialize a message with ``raw_message`` - an unparsed HL7 message
         (the MLLP wrapping around the HL7 message will be removed).
         The message will be in unicode, using the codec from
-        :py:meth:`twistedhl7.receiver.IHL7Receiver.getCodec` to decode the message.
+        :py:meth:`txHL7.receiver.IHL7Receiver.getCodec` to decode the message.
         """
         self.raw_message = raw_message
 
@@ -55,16 +55,16 @@ class IHL7Receiver(Interface):
     """Interface that must be implemented by MLLP protocol receiver instances"""
 
     def parseMessage(raw_message):
-        """Clients should parse the message and return an instance of :py:class:`twistedhl7.receiver.MessageContainer` or subclass.
+        """Clients should parse the message and return an instance of :py:class:`txHL7.receiver.MessageContainer` or subclass.
 
-        :rtype: :py:class:`twistedhl7.receiver.MessageContainer`
+        :rtype: :py:class:`txHL7.receiver.MessageContainer`
         """
         pass
 
     def handleMessage(message_container):
         """Clients must implement ``handleMessage``, which takes a ``message_container``
-        argument that is the :py:class:`twistedhl7.receiver.MessageContainer` instance
-        returned from :py:meth:`twistedhl7.receiver.IHL7Receiver.parseMessage`.
+        argument that is the :py:class:`txHL7.receiver.MessageContainer` instance
+        returned from :py:meth:`txHL7.receiver.IHL7Receiver.parseMessage`.
         The implementation, if non-blocking, may directly return the ack/nack
         message or can return the ack/nack within a
         :py:class:`twisted.internet.defer.Deferred`. If the implementation
@@ -88,7 +88,7 @@ class IHL7Receiver(Interface):
 
 
 class AbstractReceiver(object):
-    """Abstract base class implementation of :py:class:`twistedhl7.receiver.IHL7Receiver`"""
+    """Abstract base class implementation of :py:class:`txHL7.receiver.IHL7Receiver`"""
     implements(IHL7Receiver)
 
     message_cls = MessageContainer
@@ -101,9 +101,9 @@ class AbstractReceiver(object):
 
 
 class AbstractHL7Receiver(AbstractReceiver):
-    """Abstract base class implementation of :py:class:`twistedhl7.receiver.IHL7Receiver`
+    """Abstract base class implementation of :py:class:`txHL7.receiver.IHL7Receiver`
 
-    :rtype: :py:class:`twistedhl7.receiver.HL7MessageContainer`
+    :rtype: :py:class:`txHL7.receiver.HL7MessageContainer`
     """
     message_cls = HL7MessageContainer
 

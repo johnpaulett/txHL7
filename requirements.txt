@@ -1,10 +1,10 @@
-# pip requirements file for development of twisted-hl7
+# pip requirements file for development of txHL7
 #
 # Usage:
 #
 #     pip install -r requirements.txt
 
-# setup.py develop (will grab twisted-hl7's dependencies)
+# setup.py develop (will grab txHL7's dependencies)
 -e ./
 
 Sphinx==1.2.2

@@ -1,6 +1,7 @@
 
-http://twisted-hl7.readthedocs.org/
+http://txHL7.readthedocs.org/
 
+Project formerly known as "twisted-hl7".
 
 Setup environment::
 
@@ -12,5 +13,5 @@ Run tests (via twisted's trial)::
 
 
 .. image::
-   https://travis-ci.org/johnpaulett/twisted-hl7.png
-   :target: https://travis-ci.org/johnpaulett/twisted-hl7
+   https://travis-ci.org/johnpaulett/txHL7.png
+   :target: https://travis-ci.org/johnpaulett/txHL7

@@ -1,36 +1,50 @@
-===========
-twisted-hl7
-===========
+=======================================
+txHL7 -- Providing HL7 MLLP via twisted
+=======================================
 
-twisted-hl7 provides a network-level HL7 implementation, the Minimal Lower Level
-Protocol (MLLP).
+txHL7 provides a network-level HL7 implementation, the Minimal Lower Level
+Protocol (MLLP) using Python's `twisted <https://twistedmatrix.com/trac/>`_.
 
 Current Status
 ==============
 
-twisted-hl7 is still *alpha* quality software. The API can still drastically
+txHL7 is still *alpha* quality software. The API can still drastically
 change before a "1.0" release.  Currently, only the bare-minimum of MLLP is
 implemented.  However, we are working towards more complete support
 of the specification.
 
-python-hl7 vs twisted-hl7
-=========================
+python-hl7 vs txHL7
+===================
 
-`python-hl7 <http://python-hl7.readthedocs.org>`_ and twisted-hl7 are
+`python-hl7 <http://python-hl7.readthedocs.org>`_ and txHL7 are
 complementary python modules for handling HL7 data.
 
-* twisted-hl7 provides a network-level HL7 implementation (MLLP)
+* txHL7 provides a network-level HL7 implementation (MLLP)
 * python-hl7 provides a HL7 parsing implementation
 
-twisted-hl7 and python-hl7 can (and often are) used together.  But, the modular
+txHL7 and python-hl7 can (and often are) used together.  But, the modular
 approach allows a developer to substitute out either component.  For example,
 a developer may not wish to use Twisted, instead he may elect to implement
 the TCP server using :py:mod:`socket` or :py:mod:`asyncore`.  Likewise, a developer
-may wish to use an alternate HL7 parsing routine, but still use twisted-hl7.
+may wish to use an alternate HL7 parsing routine, but still use txHL7.
 
 As of the :ref:`0.2.0 release <release-0.2.0>`, there is a streamlined way
-to use python-hl7 as the parser for twisted-hl7, via the
-:py:class:`twistedhl7.receiver.AbstractHL7Receiver`.
+to use python-hl7 as the parser for txHL7, via the
+:py:class:`txHL7.receiver.AbstractHL7Receiver`.
+
+txHL7 vs twisted-hl7
+====================
+
+twisted-hl7 is the previous project name for txHL7.  The "tx" prefix
+better follows twisted's `Community Code
+<http://twistedmatrix.com/trac/wiki/CommunityCode>`_ recommendations.
+
+txHL7 is not an official twisted project.
+
+.. note::
+
+   Please update setup dependencies and imports to txHL7.
+   See :ref:`release-0.3.0`
 
 Contents
 ========

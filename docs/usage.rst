@@ -26,11 +26,11 @@ Direct Factory & Reactor Usage
 
 twistd & the mllp plugin are not required. You are able to directly start a
 twisted reactor or application, instantiating the,
-:py:class:`twistedhl7.mllp.MLLPFactory` passing into it an instance of an
-:py:class:`twistedhl7.receiver.IHL7Receiver`::
+:py:class:`txHL7.mllp.MLLPFactory` passing into it an instance of an
+:py:class:`txHL7.receiver.IHL7Receiver`::
 
     from twisted.internet import reactor
-    from twistedhl7.mllp import MLLPFactory
+    from txHL7.mllp import MLLPFactory
     from myreceiver import Receiver
 
     def run(port):

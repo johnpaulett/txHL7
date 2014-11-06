@@ -2,6 +2,21 @@
 Change Log
 ==========
 
+
+0.3.0 - November 2014
+=====================
+
+* Renamed project from twisted-hl7 to txHL7, to be in line with
+  twisted's `Community Code
+  <http://twistedmatrix.com/trac/wiki/CommunityCode>`_ recommendations.
+
+.. warning::
+
+   Please update your project to use the ``txHL7`` import instead
+   of ``twistedhl7`` and replace "twisted-hl7" with "txHL7" in
+   your setup.py or requirements.txt.
+
+
 0.2.2 - November 2014
 =====================
 
@@ -13,7 +28,7 @@ Change Log
 =====================
 
 * Delegate error processing to
-  :py:meth:`twistedhl7.receiver.MessageContainer.err`, allowing subclasses
+  :py:meth:`txHL7.receiver.MessageContainer.err`, allowing subclasses
   to define logic.
 
 .. _release-0.2.0:
@@ -22,7 +37,7 @@ Change Log
 ======================
 
 * Abstract message into a separate class that is responsible for building ACK.
-  This makes twistedhl7 useable with other HL7 parsing frameworks.
+  This makes txHL7 useable with other HL7 parsing frameworks.
   Requires a new ``IHL7Receiver.parseMessage()`` interface method.
 * Add message implementation based on python-hl7, using the new ACK functionality in 0.3.1
 * Upgrade to latest python-hl7, v0.3.1, for ACK creation

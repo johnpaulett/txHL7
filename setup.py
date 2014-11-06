@@ -1,12 +1,15 @@
 from setuptools import setup
 
 setup(
-    name='twisted-hl7',
-    version='0.2.2',
+    name='txHL7',
+    version='0.3.0',
     author='John Paulett',
     author_email='john@paulett.org',
-    description='Async Twisted server implementation of Health Level 7 MLLP',
-    url='http://twisted-hl7.readthedocs.org',
+    description="""
+    Async Twisted server implementation of Health Level 7's (HL7)
+    Minimal Lower-Layer Protocol (MLLP).
+    """,
+    url='http://txHL7.readthedocs.org',
     license='BSD',
     platforms=['POSIX', 'Windows'],
     keywords=['HL7', 'Health Level 7', 'healthcare', 'health care',
@@ -24,7 +27,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Networking'
     ],
-    packages=['twistedhl7', 'twisted.plugins'],
+    packages=['txHL7', 'twisted.plugins'],
     package_data={
         "twisted": ["plugins/mllp_plugin.py"]
     },

@@ -3,13 +3,13 @@ API
 
 Receivers
 ---------
-.. automodule:: twistedhl7.receiver
+.. automodule:: txHL7.receiver
    :members:
 
 
 MLLP
 ----
-.. automodule:: twistedhl7.mllp
+.. automodule:: txHL7.mllp
    :members:
 
 

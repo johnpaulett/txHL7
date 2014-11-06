@@ -8,7 +8,7 @@ from twisted.application.service import IServiceMaker
 from twisted.application import internet
 
 DEFAULT_ENDPOINT = "tcp:2575"
-DEFAULT_RECEIVER = "twistedhl7.receiver.LoggingReceiver"
+DEFAULT_RECEIVER = "txHL7.receiver.LoggingReceiver"
 
 
 class Options(usage.Options):
@@ -17,7 +17,7 @@ class Options(usage.Options):
 
     optParameters = [
         ['endpoint', 'e', DEFAULT_ENDPOINT, 'The string endpoint on which to listen.'],
-        ['receiver', 'r', DEFAULT_RECEIVER, 'A twistedhl7.receiver.IHL7Receiver subclass to handle messages.'],
+        ['receiver', 'r', DEFAULT_RECEIVER, 'A txHL7.receiver.IHL7Receiver subclass to handle messages.'],
     ]
 
     longdesc = """\
@@ -38,7 +38,7 @@ class MLLPServiceMaker(object):
         :rtype: :py:class:`twisted.application.internet.StreamServerEndpointService`
         """
         from twisted.internet import reactor
-        from twistedhl7.mllp import IHL7Receiver, MLLPFactory
+        from txHL7.mllp import IHL7Receiver, MLLPFactory
 
         receiver_name = options['receiver']
         receiver_class = reflect.namedClass(receiver_name)

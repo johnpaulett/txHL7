@@ -1,7 +1,7 @@
 import sys
 from twisted.internet import protocol, defer
 from zope.interface.verify import verifyObject
-from twistedhl7.receiver import IHL7Receiver
+from txHL7.receiver import IHL7Receiver
 
 
 class MinimalLowerLayerProtocol(protocol.Protocol):
