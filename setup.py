@@ -5,6 +5,7 @@ setup(
     version='0.2.1',
     author='John Paulett',
     author_email='john@paulett.org',
+    description='Async Twisted server implementation of Health Level 7 MLLP',
     url='http://twisted-hl7.readthedocs.org',
     license='BSD',
     platforms=['POSIX', 'Windows'],
