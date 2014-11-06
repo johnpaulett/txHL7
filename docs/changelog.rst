@@ -2,7 +2,12 @@
 Change Log
 ==========
 
-.. _release-0.2.0:
+0.2.2 - November 2014
+=====================
+
+* Add a description to setup.py.  Thanks `Low Kian Seong
+  <https://github.com/lowks>`_`
+
 
 0.2.1 - November 2014
 =====================

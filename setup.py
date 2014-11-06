@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='twisted-hl7',
-    version='0.2.1',
+    version='0.2.2',
     author='John Paulett',
     author_email='john@paulett.org',
     description='Async Twisted server implementation of Health Level 7 MLLP',
