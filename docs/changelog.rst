@@ -16,6 +16,11 @@ Change Log
    of ``twistedhl7`` and replace "twisted-hl7" with "txHL7" in
    your setup.py or requirements.txt.
 
+   If you perform a ``pip uninstall twisted-hl7``, ensure you do it
+   before installing txHL7, since both packages use the
+   :file:`twisted/plugins/mllp_plugin.py` twisted plugin, otherwise
+   the twisted-hl7 uninstall will remove txHL7's version of the plugin.
+
 
 0.2.2 - November 2014
 =====================
