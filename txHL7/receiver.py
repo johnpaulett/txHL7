@@ -1,4 +1,4 @@
-from zope.interface import Interface, implements
+from zope.interface import Interface, implementer
 from twisted.python import log
 from twisted.internet import defer
 
@@ -48,7 +48,7 @@ class HL7MessageContainer(MessageContainer):
 
         :rtype: unicode
         """
-        return unicode(self.message.create_ack(ack_code))
+        return str(self.message.create_ack(ack_code))
 
 
 class IHL7Receiver(Interface):
@@ -87,9 +87,9 @@ class IHL7Receiver(Interface):
         pass
 
 
+@implementer(IHL7Receiver)
 class AbstractReceiver(object):
     """Abstract base class implementation of :py:class:`txHL7.receiver.IHL7Receiver`"""
-    implements(IHL7Receiver)
 
     message_cls = MessageContainer
 

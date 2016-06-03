@@ -4,6 +4,7 @@ BIN = env/bin
 PYTHON = $(BIN)/python
 PIP = $(BIN)/pip
 TRIAL = $(BIN)/trial
+TOX = $(BIN)/tox
 
 SPHINXBUILD   = $(shell pwd)/env/bin/sphinx-build
 
@@ -13,7 +14,7 @@ env: requirements.txt
 	$(PYTHON) setup.py develop
 
 tests: env
-	$(TRIAL) tests
+	$(TOX)
 
 build:
 	$(PYTHON) setup.py sdist

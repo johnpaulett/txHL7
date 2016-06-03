@@ -2,6 +2,20 @@
 Change Log
 ==========
 
+.. _release-0.4.0:
+
+0.4.0 - unreleased
+==================
+
+* Ported to Python 3.4. Support for Python 2.6 dropped. Currently supported
+  platforms are Python 2.7 & 3.4. API remains the same, mostly test changes
+  to more explicitly indicate bytestrings vs unicode strings. Also needed
+  to convert to use zope.interface's ``@implementer()`` class advice instead
+  of the ``implements()``.
+* Use tox as primary test runner.
+
+
+.. _release-0.3.0:
 
 0.3.0 - November 2014
 =====================

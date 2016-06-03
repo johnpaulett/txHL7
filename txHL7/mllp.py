@@ -1,3 +1,4 @@
+import six
 import sys
 from twisted.internet import protocol, defer
 from zope.interface.verify import verifyObject
@@ -16,10 +17,10 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
     .. [2] http://www.hl7standards.com/blog/2007/02/01/ack-message-original-mode-acknowledgement/
     """
 
-    _buffer = ''
-    start_block = '\x0b'  # <VT>, vertical tab
-    end_block = '\x1c'  # <FS>, file separator
-    carriage_return = '\x0d'  # <CR>, \r
+    _buffer = b''
+    start_block = b'\x0b'  # <VT>, vertical tab
+    end_block = b'\x1c'  # <FS>, file separator
+    carriage_return = b'\x0d'  # <CR>, \r
 
     def dataReceived(self, data):
 
@@ -41,6 +42,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
             if len(raw_message) > 0:
                 # convert into unicode, parseMessage expects decoded string
                 raw_message = self.factory.decode(raw_message)
+
                 message_container = self.factory.parseMessage(raw_message)
 
                 # error callback (defined here, since error depends on
@@ -91,12 +93,12 @@ class MLLPFactory(protocol.ServerFactory):
 
     def decode(self, value):
         # turn value into unicode using the receiver's declared codec
-        if isinstance(value, str):
+        if isinstance(value, six.binary_type):
             return value.decode(self.encoding, self.encoding_errors)
-        return unicode(value)
+        return six.text_type(value)
 
     def encode(self, value):
         # turn value into byte string using the receiver's declared codec
-        if isinstance(value, unicode):
+        if isinstance(value, six.text_type):
             return value.encode(self.encoding, self.encoding_errors)
         return value

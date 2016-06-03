@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface.verify import verifyClass
 
 from twisted.python import usage, reflect
@@ -25,9 +25,9 @@ Starts an MLLP server. If no arguments are specified,
 it will be a demo server that logs and ACKs each message received."""
 
 
+@implementer(IServiceMaker, IPlugin)
 class MLLPServiceMaker(object):
     """Service maker for the MLLP server."""
-    implements(IServiceMaker, IPlugin)
     tapname = "mllp"
     description = "HL7 MLLP server."
     options = Options
