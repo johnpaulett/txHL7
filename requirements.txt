@@ -10,5 +10,7 @@
 Sphinx==1.2.2
 repoze.sphinx.autointerface==0.7.1
 mock==1.0.1
-flake8==2.2.2
+flake8==2.5.4
+pep8==1.7.0
+isort==4.2.5
 tox==2.3.1

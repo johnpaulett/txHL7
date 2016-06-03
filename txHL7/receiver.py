@@ -1,7 +1,6 @@
-from zope.interface import Interface, implementer
-from twisted.python import log
 from twisted.internet import defer
-
+from twisted.python import log
+from zope.interface import Interface, implementer
 import hl7
 
 

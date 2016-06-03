@@ -1,13 +1,17 @@
 import re
-import six
+
 from mock import Mock
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase
-from txHL7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
-from txHL7.receiver import MessageContainer, HL7MessageContainer, AbstractReceiver
-from .utils import HL7_MESSAGE
 from zope.interface import implementer
+import six
 
+from txHL7.mllp import IHL7Receiver, MinimalLowerLayerProtocol, MLLPFactory
+from txHL7.receiver import (
+    AbstractReceiver, HL7MessageContainer, MessageContainer
+)
+
+from .utils import HL7_MESSAGE
 
 ACK_ID = "TESTACK"
 

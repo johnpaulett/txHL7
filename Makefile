@@ -26,9 +26,11 @@ docs: env
 	cd docs; make html SPHINXBUILD=$(SPHINXBUILD); make man SPHINXBUILD=$(SPHINXBUILD); make doctest SPHINXBUILD=$(SPHINXBUILD)
 
 lint: env
-	$(BIN)/flake8 --ignore=F821 txHL7
-	# E501 -- hl7 sample messages can be long, ignore long lines in tests
-	$(BIN)/flake8) --ignore=E501 tests
+	$(BIN)/flake8 txHL7 tests twisted
+	$(BIN)/isort --recursive --check-only txHL7 tests twisted
+
+isort:
+	$(BIN)/isort --recursive txHL7 tests twisted
 
 upload: build
 	$(PYTHON) setup.py sdist register upload

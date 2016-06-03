@@ -1,7 +1,9 @@
-import six
 import sys
-from twisted.internet import protocol, defer
+
+from twisted.internet import defer, protocol
 from zope.interface.verify import verifyObject
+import six
+
 from txHL7.receiver import IHL7Receiver
 
 
