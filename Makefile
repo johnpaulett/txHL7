@@ -33,7 +33,7 @@ isort:
 	$(BIN)/isort --recursive txHL7 tests twisted
 
 upload: build
-	$(PYTHON) setup.py sdist register upload
+	$(PYTHON) setup.py sdist bdist_wheel register upload
 
 clean:
 	find txHL7 twisted tests -type f -name '*.pyc' -delete
