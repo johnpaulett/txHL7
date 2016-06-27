@@ -4,8 +4,8 @@ Change Log
 
 .. _release-0.4.0:
 
-0.4.0 - unreleased
-==================
+0.4.0 - June 2016
+=================
 
 * Ported to Python 3.4. Support for Python 2.6 dropped. Currently supported
   platforms are Python 2.7 & 3.4. API remains the same, mostly test changes
@@ -13,6 +13,7 @@ Change Log
   to convert to use zope.interface's ``@implementer()`` class advice instead
   of the ``implements()``.
 * Use tox as primary test runner.
+* Distribute Python wheel.
 
 
 .. _release-0.3.0:
