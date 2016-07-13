@@ -85,6 +85,13 @@ class IHL7Receiver(Interface):
         """
         pass
 
+    def getTimeout():
+        """Clients should return the idle timeout in seconds, or None for no timeout
+
+        :rtype: int
+        """
+        pass
+
 
 @implementer(IHL7Receiver)
 class AbstractReceiver(object):
@@ -97,6 +104,9 @@ class AbstractReceiver(object):
 
     def getCodec(self):
         return None, None
+
+    def getTimeout(self):
+        return None
 
 
 class AbstractHL7Receiver(AbstractReceiver):

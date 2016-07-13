@@ -1,13 +1,14 @@
 import sys
 
 from twisted.internet import defer, protocol
+from twisted.protocols.policies import TimeoutMixin
 from zope.interface.verify import verifyObject
 import six
 
 from txHL7.receiver import IHL7Receiver
 
 
-class MinimalLowerLayerProtocol(protocol.Protocol):
+class MinimalLowerLayerProtocol(protocol.Protocol, TimeoutMixin):
     """
     Minimal Lower-Layer Protocol (MLLP) takes the form:
 
@@ -24,7 +25,12 @@ class MinimalLowerLayerProtocol(protocol.Protocol):
     end_block = b'\x1c'  # <FS>, file separator
     carriage_return = b'\x0d'  # <CR>, \r
 
+    def connectionMade(self):
+        if self.factory.timeout is not None:
+            self.setTimeout(self.factory.timeout)
+
     def dataReceived(self, data):
+        self.resetTimeout()
 
         # success callback
         def onSuccess(message):
@@ -84,6 +90,7 @@ class MLLPFactory(protocol.ServerFactory):
             encoding_errors = None
         self.encoding = encoding or sys.getdefaultencoding()
         self.encoding_errors = encoding_errors or 'strict'
+        self.timeout = receiver.getTimeout()
 
     def parseMessage(self, message_str):
         return self.receiver.parseMessage(message_str)

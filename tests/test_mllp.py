@@ -58,6 +58,9 @@ class HL7CaptureReceiver(CaptureReceiver):
     def getCodec(self):
         return 'cp1252', 'strict'
 
+    def getTimeout(self):
+        return None
+
 
 def create_protocol(receiver):
     protocol = MinimalLowerLayerProtocol()
