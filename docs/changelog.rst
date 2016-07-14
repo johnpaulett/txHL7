@@ -2,6 +2,15 @@
 Change Log
 ==========
 
+.. _release-0.4.1:
+
+0.4.1 - July 2016
+=================
+
+* Added ``IHL7Receiver.getTimeout()`` interface method.
+  Receivers can return an integer TCP connection idle timeout in seconds.
+
+
 .. _release-0.4.0:
 
 0.4.0 - June 2016
@@ -78,7 +87,7 @@ Change Log
 
 * Convert to unicode.  As soon as a message string is assembled, decode into
   unicode, using the codec specified by the implementation of
-  ``IHL7Receiver.getCodec()`.  When writing an ACK, the message is re-encoded
+  ``IHL7Receiver.getCodec()``.  When writing an ACK, the message is re-encoded
   into that codec.
 
 0.0.2 - September 2011
