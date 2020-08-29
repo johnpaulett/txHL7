@@ -2,6 +2,14 @@
 Change Log
 ==========
 
+.. _release-0.5.0:
+
+0.5.0 - unreleased
+==================
+
+* Dropped support for Python 2.7 & 3.4. Python 3.5 - 3.8 now supported.
+
+
 .. _release-0.4.1:
 
 0.4.1 - July 2016
