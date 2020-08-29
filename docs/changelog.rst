@@ -7,6 +7,8 @@ Change Log
 0.5.0 - unreleased
 ==================
 
+* Trailing carriage return in Message now passed along per Message Construction
+  Rules. Requires python-hl7 v0.4.0.
 * Dropped support for Python 2.7 & 3.4. Python 3.5 - 3.8 now supported.
 
 
