@@ -4,11 +4,13 @@ Change Log
 
 .. _release-0.5.0:
 
-0.5.0 - unreleased
-==================
+0.5.0 - September 2020
+======================
 
-* Trailing carriage return in Message now passed along per Message Construction
-  Rules. Requires python-hl7 v0.4.0.
+* Upgrade to `python-hl7 v0.4.0 <https://python-hl7.readthedocs.io/en/latest/changelog.html#changelog-0-4-0>`_
+  * Trailing carriage return in Message now passed along per Message Construction
+    Rules. Requires python-hl7 v0.4.0.
+  * MSH.9.1.3 ("ACK") added
 * Dropped support for Python 2.7 & 3.4. Python 3.5 - 3.8 now supported.
 
 
