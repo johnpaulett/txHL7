@@ -23,7 +23,7 @@ class BaseTestCase(TestCase):
             '^' +
             re.escape('\x0bMSH|^~\\&|GHH OE|' + sending_facility + '|GHH LAB|ELAB-3|') +
             r'\d+' +
-            re.escape('||ACK^R01|' + ACK_ID + '|P|2.4\rMSA|') +
+            re.escape('||ACK^R01^ACK|' + ACK_ID + '|P|2.4\rMSA|') +
             ack_code + re.escape('|CNTRL-3456\x0d\x1c\x0d') +
             '$'
         )
