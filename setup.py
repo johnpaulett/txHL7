@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='txHL7',
-    version='0.4.1',
+    version='0.5.0',
     author='John Paulett',
     author_email='john@paulett.org',
     description="""
@@ -34,7 +34,7 @@ setup(
     install_requires=[
         # require twisted, but allow client to require specific version
         'twisted',
-        'hl7>=0.3.1',
+        'hl7>=0.4.0',
         'six',
     ],
 )

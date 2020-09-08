@@ -44,7 +44,7 @@ class MinimalLowerLayerProtocol(protocol.Protocol, TimeoutMixin):
 
         for raw_message in messages:
             # strip the rest of the MLLP shell from the HL7 message
-            raw_message = raw_message.strip(self.start_block + self.carriage_return)
+            raw_message = raw_message.strip(self.start_block)
 
             # only pass messages with data
             if len(raw_message) > 0:
