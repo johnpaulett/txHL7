@@ -32,8 +32,11 @@ lint: env
 isort:
 	$(BIN)/isort --recursive txHL7 tests twisted
 
-upload: build
-	$(PYTHON) setup.py sdist bdist_wheel register upload
+upload:
+	rm -rf dist
+	$(PYTHON) setup.py sdist bdist_wheel
+	twine upload dist/*
+.PHONY: upload
 
 clean:
 	find txHL7 twisted tests -type f -name '*.pyc' -delete

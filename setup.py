@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='txHL7',
-    version='0.5.0',
+    version='0.5.1-dev',
     author='John Paulett',
     author_email='john@paulett.org',
     description="""
